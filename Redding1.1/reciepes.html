@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Reciepe Feed</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body id="reciepes">
+
+    <header>
+        <nav class=" $navbar-info-hover-color navbar sticky-top navbar-expand-lg navbar-light bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">Redding</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav d-flex align-items-center">
+                        <li class="nav-item ">
+                            <a class="nav-link " aria-current="page" href="index.html">My Fridge</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="smartHub.html">Smart Hub</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="reciepes.html">Reciepes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="images/avatar-efe4e93be53b8f8b8714c501cb17f8de.jpg"
+                                    alt=""></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- main -->
+    <main id="list-wrapper">
+
+        <section class="container container-fluid">
+
+            <div class="container">
+
+                <section class="row">
+
+                    <section id="reciepe-preview" class="col-lg-4 col-md-10 border-right">
+
+                    </section>
+                    <section class="col-lg-8 col-md-12 border-right">
+                        <div class="container">
+                            <section class="row">
+                                <section class="col-10 ">
+                                    <div class="dropdown d-grid gap-2">
+                                        <!-- dropdown -->
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="true">
+                                            Categories
+                                        </button>
+                                        <ul class="dropdown-menu nav-fill" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">Vegeterian</a></li>
+                                            <li><a class="dropdown-item" href="#">Vegan</a></li>
+                                            <li><a class="dropdown-item" href="#">Lactose Free</a></li>
+                                            <li><a class="dropdown-item"> Gluten Free</a></li>
+                                        </ul>
+                                    </div>
+
+                                </section>
+                                <section class="col-2 d-grid gap-4">
+                                    <a href="addReciepe.html"
+                                        class="btn btn-outline-primary d-flex p-2 justify-content-center">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                    </a>
+                                </section>
+
+                            </section>
+
+                            <section class="row">
+                                <table class="table  table-hover align-middle mb-0 bg-white">
+                                    <tbody id="reciepe-dynamic-list">
+
+                                        <!-- dynamically inserted -->
+
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </section>
+    </main>
+    <script src="scripts/reciepes.js">
+    </script>
+</body>
+
+</html>
