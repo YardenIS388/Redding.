@@ -59,7 +59,10 @@
                           <a class="nav-link" href="reciepes.php">Reciepes</a>
                       </li>
                       <li class="nav-item">
-                      <?php  echo ' <a class="nav-link" href="#"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
+                          <a class="nav-link" href="logout.php" style="color:white; opacity:60%;">Logout</a>
+                     </li>
+                      <li class="nav-item">
+                      <?php  echo ' <a class="nav-link" href="#" style="background-color:white; padding:1px; border-radius:100px;"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                      </li>
                  </ul>
          </div>
@@ -69,7 +72,6 @@
          <div class="row d-flex justify-content-center">
             <h1 class=" col-3"> Edit Your Reciepe</h1>
          </div>
-         
          <form action="" method="post" class="form-floating container" enctype="multipart/form-data" id ="updateReciepeForm">
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">

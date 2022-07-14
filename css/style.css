@@ -27,12 +27,12 @@ p{
     height: 100px;
     margin: 0px;
     padding: 0px;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 #reciepes #reciepe-card>img {
     width: 82%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 30px;
     margin-bottom: 20px;
 }
  
@@ -227,3 +227,16 @@ p{
     line-height: 1em;
   }
 
+/* #ingrediant-list conatiner{
+    animation: 3s ease-out 0s 1 slideInFromLeft;
+    background: #333;
+    padding: 30px;
+}
+@keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  } */

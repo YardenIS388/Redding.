@@ -1,8 +1,8 @@
 
 
  $(document).ready(function() {
-
-     var chart = new CanvasJS.Chart("chartContainer", {     
+    const loader  = document.querySelector('#loader');
+     let chart = new CanvasJS.Chart("chartContainer", {     
          animationEnabled: true,
          title: {
              text: "How Much Food Redding Helped You Save",
@@ -22,110 +22,139 @@
      });
      chart.render();
 
-     //AJAX FOR SHOPPING LIST
-     // - create
+//fetching facts from json randomly 
 
-     const submit = document.querySelector('#submit');
-     const form   = document.querySelector('#form');
-     const items  = document.querySelector('#grocery-list-table');
-     const input  = document.querySelector('#new-item-input');
-     const loader  = document.querySelector('#loader');
+     //fetch items to screen
+     let shoppingArray = new Array();
 
-     submit.addEventListener('click', (e)=>{
-         e.preventDefault();
-         console.log(1);
-         loader.style.display = "block";
-         console.log(2);
-         saveItem();
-        
-     });
+     const shoppingNode = function (name, price , userId ,itemId){
+                    this.name   = name;
+                    this.price  = price ;
+                    this.userId = userId;
+                    this.itemId =itemId;
+                   };
 
-    
-    
-     const saveItem = async() =>{
-         try{
-             console.log("try");
-             let response = await fetch('addTheItem.php', {
-                 method:'POST',
-                 body: new FormData(form),
-             });
-             console.log("beofre");
-             const result = await response.json();   
-            
-             const node = `<tr class="item${result.itemId}"><td> <div class="d-flex align-items-center"> <input type="checkbox" class="btn btn-outline-primary"><div class="ms-3"> <p class="fw-bold mb-1">${result.itemName}</p>                   </div>  </div> </td> <td><form action="" method="post" id="delete-item-form${result.itemId}"> <button type="submit" for="delete-item-form${result.itemId}"  class="btn btn-outline-dark opacity-50"><i class="fa-solid fa-xmark p-2 event${result.itemId}" id="${result.itemId}"></i>  </button> <input type="hidden" name="item_id" value="${result.itemId}"> </form> </td> </tr>`; 
-             items.innerHTML += node;   
-             const newListener = document.querySelector(`i.event${result.itemId}`);
-             console.log(newListener);
-             loader.style.display = "none";
-             input.value=" ";   
-             console.log("end try");
-             newListener.addEventListener('click', (e)=>{
-                 e.preventDefault();
-                 deleteItem(e);
-             });
-         } catch (error) {
-                // console.log(Error(error.toString()));
-                 //loader.style.display = "none";
-                console.log(error);
-                 loader.innerHTML= '<button type="button" class="btn btn-outline-danger mt-1">Sorry, something went wrong</button>';
-        }
-       
-     };
+  $.getJSON('json/shoppingListItems.json', function (data) {
+         for( let item of data){
+            console.log(item);
+                const jsonItem = $.parseJSON(item);   
+                const newItem = new shoppingNode(jsonItem.name,jsonItem.price,jsonItem.item_id,jsonItem.user_id,);
+                shoppingArray.push(newItem); 
+                document.getElementById("grocery-list-table").innerHTML+=(`
+                <tr class="delete-item-form${jsonItem.item_id}">
+                        <td id="${jsonItem.item_id}">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" class="btn btn-outline-primary">
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">${jsonItem.name}</p>                  
+                            </div>
+                        </div>
+                    </td>                                   
+                    <td>
+                        <form action="" method="post" id="delete-item-form${jsonItem.item_id}">
+                            <button type="submit" for="delete-item-form${jsonItem.item_id}"  class="btn btn-outline-dark opacity-50" id="deleteBtn${jsonItem.item_id}">
+                               x
+                            </button>
+                            <input type="hidden" name="item_id" value="${jsonItem.item_id}">
+                        </form>
+                    </td>
+                 </tr>`);  
+         } 
 
-     //Delete 
-    
-     let deleteBtns = new Array();
-    let element;
-     deleteBtns = document.querySelectorAll('button.btn-outline-dark');
-     
-     
-     for (let index = 0; index < deleteBtns.length; index++){
-         
-         element= deleteBtns[index];
-        
-            element.addEventListener('click', (e)=>{
-             e.preventDefault();
-             console.log(e);
-             loader.style.display = "block";
-            
-             deleteItem(e);
-            
-         });
-     }
-    
-   
-    
-     const deleteItem = async(e) =>{
-         try{
-             const event= e.target.attributes.ID.value;
-            const formId = `#delete-item-form${event}`;
-             const trId   = document.querySelector(`#item${event}`);
-             const formElement = document.querySelector(formId);
-             let response = await fetch('deleteShoppingItem.php', {
-                 method:'POST',
-                 body: new FormData(formElement),
-            });
-             console.log("beofre");
-             const result = await response.json();
-             console.log(result); 
-            
-             const yes = '<button type="button" class="btn btn-outline-success">Item Deleted</button> '; 
-             loader.innerHTML= yes;
-             //trId.style.display ="none";
-             setTimeout(2000);
-             loader.style.display = "none";
-             items.innerHTML += result.retVal;    
-             console.log("end try");
-             location.reload();
-         } catch (error) {
-                
-                console.log(error);
-                 loader.innerHTML= '<button type="button" class="btn btn-outline-danger mt-1">Sorry, something went wrong</button>';
-                 setTimeout(4000);
-                 loader.style.display = "none";
+         const deleteBtns = document.querySelectorAll("[id^='deleteBtn']");
+         for(let btn of deleteBtns){
+           btn.addEventListener("click",function(e){
+               e.preventDefault();
+               loader.style.display = "block";
+               console.log(e.target);
+               deleteItem(e);
+               location.reload();
+           });
          }
-    };
+         const submitAdd = document.querySelector("#submit");
+         submitAdd.addEventListener("click", (e) =>{
+            e.preventDefault();
+            loader.style.display = "block";
+            saveItem(); 
+           
 
+         });
 
+         const shortcuts = document.querySelectorAll(".add-item-btn");
+         for(let btn of shortcuts){
+            btn.addEventListener("click", (e)=>{
+                document.getElementById("new-item-input").value = e.target.attributes.value.value;
+                submitAdd.click();
+            })
+         }
+        
+   }); 
+
+   //insert item with ajax
+
+   const saveItem = async() => {
+    try{
+        
+        const selectForm = document.getElementById("form");
+        let response = await fetch('addTheItem.php', {
+            method: 'POST',
+            body: new FormData(selectForm),
+        });
+        const result = await response.json();
+        console.log(result);
+
+        document.getElementById("grocery-list-table").innerHTML+=(`
+        <tr class="delete-item-form${result.itemId}">
+                <td id="${result.itemId}">
+                <div class="d-flex align-items-center">
+                    <input type="checkbox" class="btn btn-outline-primary">
+                    <div class="ms-3">
+                        <p class="fw-bold mb-1">${result.itemName}</p>                  
+                    </div>
+                </div>
+            </td>                                   
+            <td>
+                <form action="" method="post" id="delete-item-form${result.itemId}">
+                    <button type="submit" for="delete-item-form${result.itemId}"  class="btn btn-outline-dark opacity-50" id="deleteBtn${result.item_id}">
+                       x
+                    </button>
+                    <input type="hidden" name="item_id" value="${result.itemId}">
+                </form>
+            </td>
+         </tr>`); 
+         document.getElementById("new-item-input").value = "";
+         loader.style.display = "none";
+         document.getElementById(`deleteBtn${result.item_id}`).addEventListener("click",function(e){
+                                                                    e.preventDefault();
+                                                                    loader.style.display = "block";
+                                                                    console.log(e.target);
+                                                                    deleteItem(e);
+                                                                    location.reload();
+                                                                    });
+        
+    }catch(error){
+        console.log(error);
+    }
+   }
+
+   //Delete item with ajax
+
+   const deleteItem = async(e) => {
+    try{
+        const formId = e.target.attributes.for.value;
+        const selectForm = document.querySelector(`#${formId}`);
+        let response = await fetch('deleteShoppingItem.php', {
+            method: 'POST',
+            body: new FormData(selectForm),
+        });
+        const result = await response.json();
+        console.log(result);
+        loader.style.display = "none";
+    }catch(error){
+        console.log(error);
+    }
+   }
+
+  
 });
 

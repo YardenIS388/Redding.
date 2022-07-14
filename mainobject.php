@@ -5,7 +5,7 @@
     session_start();
 
     if(!isset($_SESSION["user_id"])) {
-        //echo 'no user id';
+        
         header('Location: ' . URL . 'index.php');
     }
     $productId=$_GET["productId"];
@@ -17,10 +17,9 @@
                 ON i.user_id = u.user_id
                 WHERE p.product_id=".$productId.";";
 
-    $result = mysqli_query($connection,$query);
-    $row = mysqli_fetch_assoc($result);
+$result = mysqli_query($connection , $query);
+$row    = mysqli_fetch_assoc($result);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +42,7 @@
     <header>
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-primary">
          <div class="container-fluid">
-             <a class="navbar-brand" href="index.html">Redding</a>
+             <a class="navbar-brand" href="smartHub.php">Redding</a>
                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                      <span class="navbar-toggler-icon"></span>
                  </button>
@@ -59,8 +58,10 @@
                           <a class="nav-link" href="reciepes.php">Reciepes</a>
                       </li>
                       <li class="nav-item">
-                      <?php  echo ' <a class="nav-link" href="#"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
+                          <a class="nav-link" href="logout.php" style="color:white; opacity:60%;">Logout</a>
                      </li>
+                      <li class="nav-item">
+                      <?php  echo ' <a class="nav-link" href="#" style="background-color:white; padding:1px; border-radius:100px;"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                  </ul>
          </div>
      </div>
@@ -93,7 +94,7 @@
                     <section class="text-center"  id="big-selected">
                             <a href="#">
                                 <img  id="big-pic" src=' .$row["img"]. ' alt="selected-item">
-                            </a> <br> <input type="number" value= ' .$row["amount"].'  style="width:50px">
+                            </a> <br> <input type="number" value= '.$row["amount"].'  style="width:50px">
                     </section>' ;
             ?>
             

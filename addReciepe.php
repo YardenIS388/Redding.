@@ -1,15 +1,10 @@
 <?php
     include 'db.php';
     include 'config.php';
-
     session_start();
-
     if(!isset($_SESSION["user_id"])) {
-        //echo 'no user id';
         header('Location: ' . URL . 'index.php');
     }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +24,7 @@
     <header>
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-primary">
          <div class="container-fluid">
-             <a class="navbar-brand" href="index.html">Redding</a>
+             <a class="navbar-brand" href="smartHub.php">Redding</a>
                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                      <span class="navbar-toggler-icon"></span>
                  </button>
@@ -45,7 +40,7 @@
                           <a class="nav-link" href="reciepes.php">Reciepes</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link" href="#"><img src="<?php echo $_SESSION["profile_pic"]?>" alt=""></a>
+                      <?php  echo ' <a class="nav-link" href="#" style="background-color:white; padding:1px; border-radius:100px;"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                      </li>
                  </ul>
          </div>
@@ -53,7 +48,7 @@
      </nav>
      </header>
     
-         <form action="phpFiles/addRecipe.php" method="get" class="form-floating container" enctype="multipart/form-data">
+         <form action="addRecipe.php" method="get" class="form-floating container" enctype="multipart/form-data">
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
@@ -81,7 +76,7 @@
                                   </select>
                             </div>
                             <div class="col-lg-3">
-                                <input name="reciepeImg" type="file" class="form-control" id="floatingInputValue" placeholder="reciepe-img">
+                                <input type ="hidden" name="reciepeImg" value="images/FrenchToast.png" type="file" class="form-control" id="floatingInputValue" placeholder="reciepe-img">
                             </div>
                             
                       </section>

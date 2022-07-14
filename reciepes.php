@@ -1,11 +1,9 @@
 <?php
     include 'db.php';
     include 'config.php';
-
     session_start();
      $USER_ID = $_SESSION["user_id"];
     if(!isset($USER_ID)) {
-        //echo 'no user id';
         header('Location: ' . URL . 'index.php');
     }
 ?>
@@ -17,9 +15,6 @@ $result = mysqli_query($connection , $query);
 if(!$result){
 die("Query Failed - could not fetch reciepe data");
 }
-
-
-
 $query_preview = " SELECT * FROM tbl_redding_reciepes_210 WHERE reciepe_id =1";
 $result_preview = mysqli_query($connection, $query_preview);
 if(!$result_preview){
@@ -48,7 +43,7 @@ die("Query Failed Couldnt Load preview Content");
     <header>
        <nav class=" $navbar-info-hover-color navbar sticky-top navbar-expand-lg navbar-light bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">Redding</a>
+            <a class="navbar-brand" href="smartHub.php">Redding</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -64,7 +59,10 @@ die("Query Failed Couldnt Load preview Content");
                          <a class="nav-link active" href="reciepes.php">Reciepes</a>
                      </li>
                      <li class="nav-item">
-                     <?php  echo ' <a class="nav-link" href="#"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
+                          <a class="nav-link" href="logout.php" style="color:white; opacity:60%;">Logout</a>
+                     </li>
+                     <li class="nav-item">
+                     <?php  echo ' <a class="nav-link" href="#" style="background-color:white; padding:1px; border-radius:100px;"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                     </li>
                 </ul>
         </div>

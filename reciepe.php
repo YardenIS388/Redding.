@@ -4,7 +4,6 @@ include "db.php";
 $reciepeId = $_GET["reciepeId"];
 $query = "SELECT * FROM dbShnkr22studWeb1.tbl_redding_reciepes_210 WHERE reciepe_id = " .$reciepeId . ";";
 $result = mysqli_query($connection,$query);
-
 if($result){
  $row = mysqli_fetch_assoc($result);
 }else{
@@ -40,4 +39,5 @@ if($result){
         </div>
     </main>
 </body>
+<?php   mysqli_close($connection); ?>
 </html>

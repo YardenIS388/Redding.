@@ -5,7 +5,7 @@
     session_start();
 
     if(!isset($_SESSION["user_id"])) {
-        //echo 'no user id';
+     
         header('Location: ' . URL . 'index.php');
     }
 
@@ -55,7 +55,10 @@
                           <a class="nav-link" href="reciepes.php">Reciepes</a>
                       </li>
                       <li class="nav-item">
-                      <?php  echo ' <a class="nav-link" href="#"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
+                          <a class="nav-link" href="logout.php" style="color:white; opacity:60%;">Logout</a>
+                     </li>
+                      <li class="nav-item">
+                        <?php  echo ' <a class="nav-link" href="#" style="background-color:white; padding:1px; border-radius:100px;"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                      </li>
                  </ul>
          </div>
@@ -68,7 +71,6 @@
                 <section class="row">
                     <section id="big-item" class="col-lg-4 col-md-10 border-right">
                       <!-- dynamically inserted -->
-                    
 
                     </section>
 
@@ -116,7 +118,7 @@
                                         <div class="co-1"></div>
                                         <div class="col-11 ">
                                    
-                                            <!-- <input id="search-bar" type="search" placeholder="Search..."> -->
+                                       
                                         </div>
                                       </div>
                                       <!-- Modal -->
@@ -128,7 +130,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="addNewItem" action="phpFiles/addToInventory.php" method="get">
+                                <form id="addNewItem" action="addToInventory.php" method="get" target="_blank">
                                     <!-- Item input -->
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="form1Example1">New Item</label>
@@ -162,7 +164,7 @@
                                       </div>
                                     <tbody id="ingrediant-list" class="align-middle">
                                        <!-- dynamically inserted -->
-                                    
+                                
                                        <?php 
                                                 class Product {
                                                          public function __construct($m_name, $m_img, $m_ex_date,$m_id,$m_days,$m_amount) {

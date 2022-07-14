@@ -25,6 +25,7 @@ submit.addEventListener('click', (e)=>{
   e.preventDefault();
   console.log("haooening");
   deleteMainObject();
+  window.location.replace("myFridge.php");
 });
 
 const deleteMainObject = async () =>{
@@ -36,7 +37,7 @@ const deleteMainObject = async () =>{
         console.log("json");
         console.log(response.status)
         const result = await response.json();
-        
+        console.log(result.itemName+" was deleted sucssfully");
   }catch(error){
                 console.log(error);
   }

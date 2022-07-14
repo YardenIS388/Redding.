@@ -1,17 +1,16 @@
 <?php
     include 'db.php';
     include 'config.php';
-
     session_start();
 
     if(!isset($_SESSION["user_id"])) {
-        //echo 'no user id';
         header('Location: ' . URL . 'index.php');
     }
-
-    $query = "SELECT * FROM dbShnkr22studWeb1.tbl_redding_shoppingList_210 AS shopping
+    $query = "SELECT DISTINCT * FROM dbShnkr22studWeb1.tbl_redding_shoppingList_210 AS shopping
     JOIN dbShnkr22studWeb1.tbl_users_210 AS users
-    ON shopping.user_id = ".$_SESSION["user_id"].";";
+    ON shopping.user_id = users.user_id
+    WHERE users.user_id = ".$_SESSION["user_id"].";";
+   
     $result = mysqli_query($connection , $query);
     if(!$result){
         die("Query Failed - could not fetch Shopping list data");
@@ -36,7 +35,7 @@
     <header>
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-primary">
          <div class="container-fluid">
-             <a class="navbar-brand" href="index.html">Redding</a>
+             <a class="navbar-brand" href="#">Redding</a>
                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                      <span class="navbar-toggler-icon"></span>
                  </button>
@@ -52,7 +51,7 @@
                           <a class="nav-link" href="reciepes.php">Reciepes</a>
                       </li>
                       <li class="nav-item">
-                         <a class="nav-link" href="#"><img src="<?php echo $_SESSION["profile_pic"]?>" alt=""></a>
+                      <?php  echo ' <a class="nav-link" href="#"><img src="  images/'.$_SESSION["user_id"].'.png" alt=""></a>';?>
                      </li>
                  </ul>
          </div>
@@ -68,34 +67,29 @@
                             <hr>
                             <table class="table align-middle mb-0 bg-white">         
                                 <tbody id="grocery-list-table">                                               
-                                        <?php 
-                                                
-                                                while($row = mysqli_fetch_assoc($result)){
-                                                    $name    = $row["item_name"];
-                                                    $price   = $row["price"];
-                                                    $user_id = $row["user_id"];
-                                                    $item_id = $row["item_id"];
-                                                   
-                                         echo '<tr class="item'.$item_id .'">
-                                                    <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <input type="checkbox" class="btn btn-outline-primary">
-                                                        <div class="ms-3">
-                                                            <p class="fw-bold mb-1">'.$name.'</p>                  
-                                                        </div>
-                                                    </div>
-                                                </td>                                   
-                                                <td>
-                                                    <form action="" method="post" id="delete-item-form'.$item_id .'">
-                                                        <button type="submit" for="delete-item-form'.$item_id .'"  class="btn btn-outline-dark opacity-50">
-                                                            <i class="fa-solid fa-xmark p-2" id="'.$item_id .'"></i>
-                                                        </button>
-                                                        <input type="hidden" name="item_id" value="'.$item_id .'">
-                                                    </form>
-                                                </td>
-                                             </tr>' ;
-                                                 }
-                                        ?>
+                                <?php 
+                                        class Item {
+                                                 public function __construct($m_name, $m_price, $m_userId,$m_itemId) {
+                                                        $this->name     = $m_name;
+                                                        $this->price    = $m_price;
+                                                        $this->user_id  = $m_userId;
+                                                        $this->item_id  = $m_itemId;     
+                                                }
+                                        }
+                                        $itemsArray = array();
+                                        while($row = mysqli_fetch_assoc($result)){
+                                                $name    = $row["item_name"];
+                                                $price   = $row["price"];
+                                                $user_id = $row["user_id"];
+                                                $item_id = $row["item_id"];
+                                                array_push($itemsArray, new Item($name,$price,$user_id,$item_id));
+                                        }                                     
+                                    $jsonArray = array();
+                                    foreach ($itemsArray as $key=>$value){
+                                        array_push($jsonArray,json_encode($value));                                                               
+                                    }
+                                    file_put_contents('json/shoppingListItems.json',json_encode($jsonArray));
+                                ?>  
                                 </tbody>
                                 <form action="" method="post" id="form">
                                 <tbody>
@@ -123,10 +117,16 @@
                             <section class="card">
                                  <section class="card-wrapper">
                                     <h2> New Smart Suggestions</h2>
-                                    <p>
-                                         Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                         Molestiae eaque consequatur suscipit similique cupiditate
-                                         e.
+                                    <p id ="smart-suggestion">
+                                        <?php 
+                                              // Takes raw data from the request
+                                             $json = file_get_contents('json/facts.json');
+                                             $data = json_decode($json,true);  
+                                             $random = random_int(1,6);
+                                             $data = array_values($data)[$random];
+                                             echo $data["fact"];
+                                                
+                                        ?>
                                    </p>
                                 </section>
                             </section>
@@ -140,14 +140,10 @@
                                    <h2>You Usually Buy</h2>
                                    <section id="usually-buy" class="d-flex align-items-center justify-content-around">
                                        <section class="make-column">
-
-                                       <!-- <input type="submit" for="form" class="btn btn-outline-primary" value="+" name="submit" id="submit">   -->
-                                            <button name="item" value="Milk" type="submit" for="form" id="Milk" class="add-item-btn btn btn-outline-primary "><img src="images/Milk.png" alt=""><i class="fa-solid fa-plus p-2"></i></button>
-                                            <div class="add-item-btn btn btn-outline-primary"><img src="images/Lemon.png" alt=""><i class="fa-solid fa-plus p-2"></i></div>
-                                            <div class="add-item-btn btn btn-outline-primary"><img src="images/Apple.png" alt=""><i class="fa-solid fa-plus p-2"></i></div>
-                                            <div class="add-item-btn btn btn-outline-primary"><img src="images/Bread.png" alt=""><i class="fa-solid fa-plus p-2"></i></div>
-                                        
-                                           
+                                            <button name="item" value="Milk"   type="submit" for="form" class="add-item-btn btn btn-outline-primary "><img value="Milk" src="images/Milk.png" alt=""><i class="fa-solid fa-plus p-2" value="Milk"></i></button>
+                                            <button name="item" value="Lemon"  type="submit" for="form" class="add-item-btn btn btn-outline-primary"><img src="images/Lemon.png" alt="" value="Lemon"><i class="fa-solid fa-plus p-2" value="Lemon"></i></button>
+                                            <button name="item" value="Apples" type="submit" for="form" class="add-item-btn btn btn-outline-primary"><img src="images/Apple.png" alt="" value="Apples"><i class="fa-solid fa-plus p-2" value="Apples"></i></button>
+                                            <button name="item" value="Bread"  type="submit" for="form" class="add-item-btn btn btn-outline-primary"><img src="images/Bread.png" alt="" value="Bread"><i class="fa-solid fa-plus p-2" value="Bread"></i></button>   
                                        </section>
                                      </section>
                                </section>

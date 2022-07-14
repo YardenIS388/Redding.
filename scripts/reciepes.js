@@ -14,7 +14,6 @@ $(document).ready(function () {
         $.each(data, function(i , reciepe){
             const jsonItem = $.parseJSON(reciepe);
              console.log(jsonItem.permission);
-             const id = jsonItem.id;
              const newProduct = new ReciepeNode(jsonItem.img,jsonItem.name,jsonItem.prep_time,jsonItem.description,jsonItem.id,jsonItem.permission);
              
              reciepeArray.push(newProduct);
@@ -25,7 +24,7 @@ $(document).ready(function () {
           for (let index = 0; index < reciepeArray.length; index++) {
             const nextItem = reciepeArray[index];
             console.log(nextItem.name,nextItem.edit);
-            var edit = "";
+            let edit = "";
             if(nextItem.edit == 1){
                     edit = "edit";
             }
@@ -33,7 +32,7 @@ $(document).ready(function () {
                 edit ="";
             }
            reciepeList.innerHTML +=
-                 `  <tr> <td id= "${nextItem.ID}" > <div class="d-flex "> <img src="${nextItem.url}"  title="user img"/><div class="ms-3">
+                 `  <tr> <td id= "${nextItem.ID}" > <div class="d-flex "> <img src="${nextItem.url}" class="rounded"  title="user img"/> <div class="ms-3">
                         <p class="fw-bold mb-1">
                             ${nextItem.name} 
                          </p> 
@@ -90,7 +89,7 @@ $(document).ready(function () {
                         if(currentReciepe){
                             console.log("id: "+reciepeId);
                     
-                            const nextPreview = ' <section id="reciepe-card-wrapper"><section id="reciepe-card"><img src='+ currentReciepe.url +' alt=""><section id="reciepe-details"><h1>'+ currentReciepe.name +'</h1> <p> '+ currentReciepe.time +'</p> </section><a href="reciepe.php?reciepeId='+currentReciepe.id+'" class="btn btn-outline-primary reciepe-view-button" >View  </a></section> </section> <section id="reciepe-content"><h2> Ingrediants</h2><p>'+ currentReciepe.content +' </p> </section>';
+                            const nextPreview = ' <section id="reciepe-card-wrapper"><section id="reciepe-card"><img src='+ currentReciepe.url +' alt=""><section id="reciepe-details"><h1>'+ currentReciepe.name +'</h1> <p> '+ currentReciepe.time +'</p> </section><a href="reciepe.php?reciepeId='+currentReciepe.ID+'" class="btn btn-outline-primary reciepe-view-button" >View  </a></section> </section> <section id="reciepe-content"><h2> Ingrediants</h2><p>'+ currentReciepe.content +' </p> </section>';
                             document.getElementById("reciepe-preview").innerHTML = nextPreview;
                         }else{
                         console.log("problem with preview");
@@ -106,7 +105,7 @@ $(document).ready(function () {
  
 function findReciepe(id){
 console.log(id);
-    for(var i in reciepeArray){
+    for(let i in reciepeArray){
         if(reciepeArray[i].ID == id){
             return reciepeArray[i];
         }
@@ -115,19 +114,5 @@ console.log(id);
 
 });
 
-// const applePie        = new ReciepeNode("images/ApplePie.png","Apple Pie","45 minutes",appleD,0);
-// const lemonCurd       = new ReciepeNode("images/LemonCurd.png","Lemon Curd","25 minutes",lemonD,1);
-// const sweetnedMilk    = new ReciepeNode("images/Panckes.png","Buckwheat Panckes","25 minutes",PancakeD,2);
-// const spaghetti       = new ReciepeNode("images/pizza.png","Homemade Pizza","30 minutes",pizzaD,3);
-// const quinoaSalad     = new ReciepeNode("images/QuinoaSalad.png","Quinoa Salad","50 minutes",quinoaD,4);
-// const stuffedZucchini = new ReciepeNode("images/StuffedZucchini.png","Stuffed Zucchini","25 minutes",zucchiniD,5);
-// const banufiPie       = new ReciepeNode("images/SteakReciepe.png","Steak ","15 minutes",steakD,6);
-
-// let reciepeArray = [applePie, lemonCurd,sweetnedMilk,spaghetti,quinoaSalad,stuffedZucchini,banufiPie];
-
-// document.getElementById("reciepe-preview").innerHTML = ' <section id="reciepe-card-wrapper"><section id="reciepe-card"><img src='+ reciepeArray[0].url +' alt=""><section id="reciepe-details"><h1>'+ reciepeArray[0].name +'</h1> <p> '+ reciepeArray[0].time +'</p> </section><button class="btn btn-outline-primary reciepe-view-button" >View  </button></section> </section> <section id="reciepe-content"><h2> Ingrediants</h2><p>'+ reciepeArray[0].content +' </p> </section>';
-
- 
-// });
 
 
